@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru" class="page-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тренажер слепой печати</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="trainer">
+    <header class="top-header">
+      <div class="logo-title-group">
+        <svg class="main-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2" />
+          <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M18 12h.01M7 16h10" stroke-linecap="round"/>
+        </svg>
+        <h1 class="main-title">Тренажер слепой печати</h1>
+      </div>
+      <p class="subtitle">Печатай, не глядя на клавиатуру. Ритм, точность, спокойствие.</p>
+
+      <section class="panel options">
+        <div class="option-group">
+          <label class="lbl-lang">Язык / Language</label>
+          <select class="select-lang">
+            <option value="ru" selected>Русский</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+        <div class="option-group">
+          <label class="lbl-word-count">Количество слов</label>
+          <select class="word-count">
+            <option value="10">10</option>
+            <option value="30" selected>30</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="custom">Свое значение</option>
+          </select>
+          <input class="custom-word-count" type="number" min="1" value="150" disabled>
+        </div>
+        <div class="option-group">
+          <label class="lbl-time-limit">Время (мин)</label>
+          <select class="time-limit">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="custom">Свое значение</option>
+          </select>
+          <input class="custom-time-limit" type="number" min="1" value="5" disabled>
+        </div>
+        <div class="option-group checkboxes">
+          <label><input class="with-punctuation" type="checkbox" checked> <span class="lbl-pct">Пунктуация</span></label>
+          <label><input class="with-numbers" type="checkbox" checked> <span class="lbl-num">Цифры</span></label>
+        </div>
+        <button class="new-text-btn" type="button">Начать заново</button>
+      </section>
+    </header>
+
+    <section class="stats" style="position: relative;">
+      <div class="stats-info-wrapper">
+        <button type="button" class="stats-info-btn" aria-label="Показать справку по метрикам">?</button>
+        <div class="stats-tooltip">
+          <strong class="tip-wpm-title">WPM (Words Per Minute)</strong> — <span class="tip-wpm-desc">скорость в словах в минуту. Стандартное слово считается равным 5 символам.</span><br><br>
+          <strong class="tip-cpm-title">CPM (Characters Per Minute)</strong> — <span class="tip-cpm-desc">чистая скорость в знаках (символах) в минуту, включая пробелы и знаки препинания.</span>
+        </div>
+      </div>
+
+      <article class="stat">
+        <span class="label lbl-stat-wpm">Скорость WPM</span>
+        <span class="value wpm-value">0</span>
+      </article>
+      <article class="stat">
+        <span class="label lbl-stat-accuracy">Точность</span>
+        <span class="value"><span class="accuracy-value">100</span>%</span>
+      </article>
+      <article class="stat">
+        <span class="label lbl-stat-progress">Прогресс</span>
+        <span class="value"><span class="progress-value">0</span>%</span>
+      </article>
+      <article class="stat">
+        <span class="label lbl-stat-time">Осталось времени</span>
+        <span class="value"><span class="remaining-time-value">--:--</span></span>
+      </article>
+    </section>
+
+    <div class="session-toolbar">
+      <button type="button" class="btn-secondary new-session-btn">Начать заново / настройки</button>
+    </div>
+
+    <section class="typing-area" tabindex="0" aria-label="Поле тренировки">
+      <div class="typing-scroll">
+        <div class="typing-inner"></div>
+      </div>
+    </section>
+    <p class="hint hint-bar">Нажми на область текста и печатай. Backspace работает.</p>
+
+    <section class="keyboard-wrap panel">
+      <div class="keyboard"></div>
+    </section>
+  </main>
+
+  <div class="modal results-modal hidden" role="dialog" aria-modal="true" aria-labelledby="resultsTitle">
+    <div class="modal-backdrop"></div>
+    <div class="modal-box panel extended-modal">
+      <h2 class="results-title">Анализ тренировки</h2>
+      
+      <div class="result-rank-box">
+        <span class="rank-label">Ваш статус:</span>
+        <div class="result-rank rank-value">Высший пилотаж</div>
+      </div>
+
+      <div class="results-grid">
+        <div class="result-card">
+          <span class="rc-label rc-lbl-acc">Точность</span>
+          <strong class="rc-value result-accuracy">0%</strong>
+        </div>
+        <div class="result-card">
+          <span class="rc-label">Скорость (WPM)</span>
+          <strong class="rc-value result-wpm">0</strong>
+        </div>
+        <div class="result-card">
+          <span class="rc-label">Скорость (CPM)</span>
+          <strong class="rc-value result-cpm">0</strong>
+        </div>
+        <div class="result-card">
+          <span class="rc-label rc-lbl-time">Время</span>
+          <strong class="rc-value result-time">0с</strong>
+        </div>
+        <div class="result-card">
+          <span class="rc-label rc-lbl-chars">Всего знаков</span>
+          <strong class="rc-value result-chars">0</strong>
+        </div>
+        <div class="result-card bad-card">
+          <span class="rc-label rc-lbl-err">Ошибок</span>
+          <strong class="rc-value result-errors">0</strong>
+        </div>
+      </div>
+
+      <div class="analysis-box">
+        <p><span class="rc-lbl-worst">⚠️ Самая проблемная клавиша:</span> <strong class="worst-key">—</strong></p>
+      </div>
+
+      <button type="button" class="modal-primary modal-new-btn">Следующая тренировка</button>
+      <button type="button" class="modal-close modal-close-btn">Закрыть окно</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
